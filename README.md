@@ -1,1 +1,1 @@
-# bicep-data-platform-modular
+A Bicep Data Platform Accelerator
