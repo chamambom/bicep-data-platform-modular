@@ -8,6 +8,7 @@ param deployKeyVault bool
 param logAnalyticsName string
 param containerA string
 param containerB string
+param storageAccountName string
 
 module stg './modules/storage.bicep' = if (deployStorage) {
   name: 'storageDeploy'
@@ -15,6 +16,7 @@ module stg './modules/storage.bicep' = if (deployStorage) {
     containerA: containerA
     containerB: containerB
     location: location
+    storageAccountName: storageAccountName
   }
 }
 
