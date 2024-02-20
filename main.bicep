@@ -1,8 +1,7 @@
-param project string 
-param env string 
-param location string 
-// param testparameter string
-
+param project string
+param env string
+param location string
+// param resourceGroup string
 param deployStorage bool
 param deployPrivateEndpoint bool
 param deployLogAnalytics bool
@@ -10,14 +9,9 @@ param deployDataFactory bool
 param deploySql bool
 param deployDatabricks bool
 param deployKeyVault bool
+param logAnalyticsName string
 
-
-var logAnalyticsName = 'mdp-dev-logs-la'
-
-
-
-
-module stg './modules/storage.bicep' = if (deployStorage){    
+module stg './modules/storage.bicep' = if (deployStorage) {
   name: 'storageDeploy'
   params: {
     // project: project
@@ -27,7 +21,7 @@ module stg './modules/storage.bicep' = if (deployStorage){
   }
 }
 
-module privateEndpoint './modules/privateEndpoint.bicep' = if (deployPrivateEndpoint){    
+module privateEndpoint './modules/privateEndpoint.bicep' = if (deployPrivateEndpoint) {
   name: 'privateEndpointDeploy'
   params: {
 
@@ -39,7 +33,7 @@ module privateEndpoint './modules/privateEndpoint.bicep' = if (deployPrivateEndp
   }
 }
 
-module adf './modules/datafactory.bicep' = if (deployDataFactory){
+module adf './modules/datafactory.bicep' = if (deployDataFactory) {
   name: 'factoryDeploy'
   params: {
     project: project
@@ -49,29 +43,29 @@ module adf './modules/datafactory.bicep' = if (deployDataFactory){
   }
 }
 
-module sql './modules/sql.bicep' = if (deploySql){
+module sql './modules/sql.bicep' = if (deploySql) {
   name: 'sqlDeploy'
   params: {
     project: project
     env: env
     location: location
     dbprefix: 'sqldb'
-    serverprefix: 'sqlsrv' 
+    serverprefix: 'sqlsrv'
   }
 }
 
-module dbr './modules/databricks.bicep' = if(deployDatabricks) {
+module dbr './modules/databricks.bicep' = if (deployDatabricks) {
   name: 'databricksDeploy'
   params: {
     project: project
     env: env
     location: location
     prefix: 'dbr'
-  
+
   }
 }
 
-module keyvault './modules/keyvault.bicep' = if(deployKeyVault) {
+module keyvault './modules/keyvault.bicep' = if (deployKeyVault) {
   name: 'keyvaultDeploy'
   params: {
     project: project
@@ -82,13 +76,11 @@ module keyvault './modules/keyvault.bicep' = if(deployKeyVault) {
   }
 }
 
-
-
-module logAnalytics './modules/loganalytics-main.bicep' = if(deployLogAnalytics) {
+module logAnalytics './modules/loganalytics-main.bicep' = if (deployLogAnalytics) {
   name: 'LogAnalyticsDeploy'
   params: {
-      location: location
-      logAnalyticsName: logAnalyticsName
-      retentionInDays: 90
+    location: location
+    logAnalyticsName: logAnalyticsName
+    retentionInDays: 90
   }
 }
