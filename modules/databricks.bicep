@@ -1,5 +1,4 @@
 var sub = subscription().subscriptionId
-param prefix string
 param location string
 
 var name = 'dtbricks'

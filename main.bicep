@@ -1,5 +1,3 @@
-param project string
-param env string
 param location string
 // param resourceGroup string
 param deployStorage bool
