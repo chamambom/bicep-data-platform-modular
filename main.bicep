@@ -10,10 +10,7 @@ param logAnalyticsName string
 module stg './modules/storage.bicep' = if (deployStorage) {
   name: 'storageDeploy'
   params: {
-    // project: project
-    // env: env
     location: location
-    // prefix: 'sa'
   }
 }
 
