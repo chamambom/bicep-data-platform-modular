@@ -4,9 +4,39 @@ var virtualNetworkName = 'mdp-dev-vnetint-vnet'
 // param spoke01Name string = 'spoke01'
 // param spoke01IpPrefix string = '10.20.'
 // var subnetNamePrefix = '${spoke01Name}sn'
-param storagesuffix string = environment().suffixes.storage
+// param storagesuffix string = environment().suffixes.storage
 
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-05-01' existing = {
+  name: virtualNetworkName
+}
 
+param storageID string
+
+resource sablobpe 'Microsoft.Network/privateEndpoints@2023-05-01' = {
+  name: 'mdp-dev-data-sa-pe'
+  location: location
+  properties: {
+    subnet: {
+      id: virtualNetwork.properties.subnets[0].id
+    }
+    privateLinkServiceConnections: [
+      {
+        name: 'mdp-dev-data-sa-pe-conn'
+        properties: {
+          // privateLinkServiceId: storageAccountName_resource.id
+          privateLinkServiceId: storageID
+          groupIds: [
+            'blob'
+          ]
+          privateLinkServiceConnectionState: {
+            status: 'Approved'
+            actionsRequired: 'None'
+          }
+        }
+      }
+    ]
+  }
+}
 
 // resource storageAccountName_resource 'Microsoft.Storage/storageAccounts@2023-01-01' = {
 //   name: storageAccountName
@@ -52,17 +82,15 @@ param storagesuffix string = environment().suffixes.storage
 //   }
 // }
 
-resource blobPrivDNS 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'privatelink.blob.${storagesuffix}'
-  location: 'global'
-}
-
+// resource blobPrivDNS 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+//   name: 'privatelink.blob.${storagesuffix}'
+//   location: 'global'
+// }
 
 // resource tablePrivDNS 'Microsoft.Network/privateDnsZones@2020-06-01' = {
 //   name: 'privatelink.table.${storagesuffix}'
 //   location: 'global'
 // }
-
 
 // resource queuePrivDNS 'Microsoft.Network/privateDnsZones@2020-06-01' = {
 //   name: 'privatelink.queue.${storagesuffix}'
@@ -73,7 +101,6 @@ resource blobPrivDNS 'Microsoft.Network/privateDnsZones@2020-06-01' = {
 //   name: 'privatelink.file.${storagesuffix}'
 //   location: 'global'
 // }
-
 
 // resource storageAccountName_default 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
 //   parent: storageAccountName_resource
@@ -101,56 +128,21 @@ resource blobPrivDNS 'Microsoft.Network/privateDnsZones@2020-06-01' = {
 //   }
 // }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-05-01' existing = {
-  name: virtualNetworkName
-}
-
-
-param storageID string
-
-resource sablobpe 'Microsoft.Network/privateEndpoints@2023-05-01' = {
-  name: 'mdp-dev-data-sa-pe'
-  location: location
-  properties:{
-    subnet: {
-      id: virtualNetwork.properties.subnets[0].id
-    }
-    privateLinkServiceConnections: [
-    {
-      name: 'mdp-dev-data-sa-pe-conn'
-      properties: {
-        // privateLinkServiceId: storageAccountName_resource.id
-        privateLinkServiceId: storageID
-        groupIds:[
-          'blob'
-        ]
-        privateLinkServiceConnectionState: {
-          status: 'Approved'
-          actionsRequired: 'None'
-        }
-      }
-    }
-    ]
-  }
-}
-
-
-resource privateEndpoints_DNS_blob 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01' = {
-  name: 'default'
-  parent: sablobpe
-  properties: {
-    privateDnsZoneConfigs: [
-      {
-        name: blobPrivDNS.name
-        properties: {
-          privateDnsZoneId: blobPrivDNS.id
-        }
-      }
-    ]
-  }
-  dependsOn: [
-  ]
-}
+// resource privateEndpoints_DNS_blob 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01' = {
+//   name: 'default'
+//   parent: sablobpe
+//   properties: {
+//     privateDnsZoneConfigs: [
+//       {
+//         name: blobPrivDNS.name
+//         properties: {
+//           privateDnsZoneId: blobPrivDNS.id
+//         }
+//       }
+//     ]
+//   }
+//   dependsOn: []
+// }
 
 // resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
 //   name: spoke01Name
