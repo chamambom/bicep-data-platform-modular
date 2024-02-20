@@ -4,8 +4,6 @@ param deployStorage bool
 param deployPrivateEndpoint bool
 param deployLogAnalytics bool
 param deployDataFactory bool
-param deploySql bool
-param deployDatabricks bool
 param deployKeyVault bool
 param logAnalyticsName string
 
