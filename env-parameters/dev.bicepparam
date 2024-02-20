@@ -1,7 +1,5 @@
 using '../main.bicep'
 
-param project = 'fenz'
-param env = 'dev'
 param location = 'australiaeast'
 param deployStorage = true
 param deployPrivateEndpoint = true

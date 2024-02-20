@@ -1,16 +1,12 @@
-param project string 
-param env string 
-param prefix string
 param location string
 
-
-var name = '${prefix}-${project}-${env}'
+var name = 'kvfenz'
 
 resource keyvault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   name: name
   location: location
-  
-  properties :{
+
+  properties: {
     tenantId: subscription().tenantId
     sku: {
       family: 'A'
@@ -20,11 +16,3 @@ resource keyvault 'Microsoft.KeyVault/vaults@2019-09-01' = {
     enableRbacAuthorization: true
   }
 }
-
-
-
-
-
-
-
-
