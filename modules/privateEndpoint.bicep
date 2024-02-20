@@ -1,10 +1,8 @@
 // param storageAccountName string = 'mdpdevdatasa'
-param location string = 'australiaeast'
-var virtualNetworkName = 'mdp-dev-vnetint-vnet'
-// param spoke01Name string = 'spoke01'
-// param spoke01IpPrefix string = '10.20.'
-// var subnetNamePrefix = '${spoke01Name}sn'
-// param storagesuffix string = environment().suffixes.storage
+param location string
+param virtualNetworkName string
+param privateEndpointName string
+param privateLinkServiceConnName string
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-05-01' existing = {
   name: virtualNetworkName
@@ -13,7 +11,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-05-01' existing 
 param storageID string
 
 resource sablobpe 'Microsoft.Network/privateEndpoints@2023-05-01' = {
-  name: 'mdp-dev-data-sa-pe'
+  name: privateEndpointName
   location: location
   properties: {
     subnet: {
@@ -21,7 +19,7 @@ resource sablobpe 'Microsoft.Network/privateEndpoints@2023-05-01' = {
     }
     privateLinkServiceConnections: [
       {
-        name: 'mdp-dev-data-sa-pe-conn'
+        name: privateLinkServiceConnName
         properties: {
           // privateLinkServiceId: storageAccountName_resource.id
           privateLinkServiceId: storageID

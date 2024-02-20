@@ -9,6 +9,9 @@ param logAnalyticsName string
 param containerA string
 param containerB string
 param storageAccountName string
+param virtualNetworkName string
+param privateEndpointName string
+param privateLinkServiceConnName string
 
 module stg './modules/storage.bicep' = if (deployStorage) {
   name: 'storageDeploy'
@@ -23,7 +26,9 @@ module stg './modules/storage.bicep' = if (deployStorage) {
 module privateEndpoint './modules/privateEndpoint.bicep' = if (deployPrivateEndpoint) {
   name: 'privateEndpointDeploy'
   params: {
-
+    privateEndpointName: privateEndpointName
+    privateLinkServiceConnName: privateLinkServiceConnName
+    virtualNetworkName: virtualNetworkName
     storageID: stg.outputs.sid
     location: location
   }
