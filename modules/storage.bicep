@@ -1,8 +1,10 @@
 param storageAccountName string = 'mdpdevdatasa'
 param location string = 'australiaeast'
+param containerA string
+param containerB string
 param containerNames array = [
-  'Data'
-  'SensitiveData'
+  containerA
+  containerB
 ]
 
 resource storageAccountName_resource 'Microsoft.Storage/storageAccounts@2023-01-01' = {
@@ -78,6 +80,5 @@ resource storageAccountName_default 'Microsoft.Storage/storageAccounts/blobServi
 resource blob 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for name in containerNames: {
   name: '${storageAccountName_resource.name}/default/${name}'
 }]
-
 
 output sid string = storageAccountName_resource.id

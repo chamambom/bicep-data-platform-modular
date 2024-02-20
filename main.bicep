@@ -6,10 +6,14 @@ param deployLogAnalytics bool
 param deployDataFactory bool
 param deployKeyVault bool
 param logAnalyticsName string
+param containerA string
+param containerB string
 
 module stg './modules/storage.bicep' = if (deployStorage) {
   name: 'storageDeploy'
   params: {
+    containerA: containerA
+    containerB: containerB
     location: location
   }
 }
