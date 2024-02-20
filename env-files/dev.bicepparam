@@ -1,4 +1,4 @@
-using './main.bicep'
+using '../main.bicep'
 
 param project = 'fenz'
 param env = 'dev'
