@@ -13,7 +13,7 @@ param containerNames array = [
 ]
 
 resource storageAccountName_resource 'Microsoft.Storage/storageAccounts@2023-01-01' = [for name in storageAccountNames: {
-  name: '${name}'
+  name: name
   location: location
   sku: {
     name: 'Standard_LRS'
@@ -52,9 +52,14 @@ resource storageAccountName_resource 'Microsoft.Storage/storageAccounts@2023-01-
   }
 }]
 
-// resource storageAccountName_default 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = [for name in storageAccountNames: {
-//   name: 'default'
+resource blobContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = [for storageAccount in storageAccountName_resource: {
+  name: '${storageAccount.name}-blob-container'
+  parent: storageAccount
+}]
+
+// resource storageAccountName_default 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
 //   parent: storageAccountName_resource
+//   name: 'default'
 //   properties: {
 //     changeFeed: {
 //       enabled: false
@@ -76,7 +81,7 @@ resource storageAccountName_resource 'Microsoft.Storage/storageAccounts@2023-01-
 //     }
 //     isVersioningEnabled: false
 //   }
-// }]
+// }
 
 // resource blob 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for name in containerNames: {
 //   name: '${storageAccountName_resource.name}/default/${name}'
