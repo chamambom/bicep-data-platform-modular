@@ -118,5 +118,5 @@ resource storageBcontainers 'Microsoft.Storage/storageAccounts/blobServices/cont
 
 //storage accounts IDs.
 output storageAccountIds array = [for i in range(0, length(storageNames)): {
-  Ids: storageAccounts[i].id
+  ids: storageAccounts[i].id
 }]
