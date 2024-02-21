@@ -39,7 +39,6 @@ module privateEndpoint './modules/privateEndpoint.bicep' = if (deployPrivateEndp
     DataprivateLinkServiceConnName: DataprivateLinkServiceConnName
     LogsprivateLinkServiceConnName: LogsprivateLinkServiceConnName
     virtualNetworkName: virtualNetworkName
-    // DatastorageID: stg.outputs.names[0]
     DatastorageID: stg.outputs.storageAccountIds[0].ids
     LogsstorageID: stg.outputs.storageAccountIds[1].ids
     location: location
