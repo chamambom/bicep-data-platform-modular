@@ -8,7 +8,9 @@ param deployKeyVault bool
 param logAnalyticsName string
 param containerA string
 param containerB string
-param storageAccountName string
+param storageA string
+param storageB string
+
 param virtualNetworkName string
 param privateEndpointName string
 param privateLinkServiceConnName string
@@ -19,7 +21,8 @@ module stg './modules/storage.bicep' = if (deployStorage) {
     containerA: containerA
     containerB: containerB
     location: location
-    storageAccountName: storageAccountName
+    storageA: storageA
+    storageB: storageB
   }
 }
 
@@ -29,7 +32,7 @@ module privateEndpoint './modules/privateEndpoint.bicep' = if (deployPrivateEndp
     privateEndpointName: privateEndpointName
     privateLinkServiceConnName: privateLinkServiceConnName
     virtualNetworkName: virtualNetworkName
-    storageID: stg.outputs.sid
+    storageID: stg.outputs.names[0]
     location: location
   }
 }
