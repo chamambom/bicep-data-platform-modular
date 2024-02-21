@@ -1,7 +1,7 @@
 using '../main.bicep'
 
 param deployStorage = true
-param deployPrivateEndpoint = false
+param deployPrivateEndpoint = true
 param deployLogAnalytics = false
 param deployDataFactory = false
 param deployKeyVault = false
