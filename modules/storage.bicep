@@ -58,6 +58,7 @@ resource storageAccounts 'Microsoft.Storage/storageAccounts@2023-01-01' = [for n
       keySource: 'Microsoft.Storage'
     }
     accessTier: 'Hot'
+    isHnsEnabled:true
   }
 }]
 
@@ -66,6 +67,28 @@ resource storageAccounts 'Microsoft.Storage/storageAccounts@2023-01-01' = [for n
 resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = [for i in range(0, length(storageNames)): {
   name: 'default'
   parent: storageAccounts[i]
+
+  properties: {
+        changeFeed: {
+          enabled: false
+        }
+        restorePolicy: {
+          enabled: false
+        }
+        containerDeleteRetentionPolicy: {
+          enabled: true
+          days: 7
+        }
+        cors: {
+          corsRules: []
+        }
+        deleteRetentionPolicy: {
+          allowPermanentDelete: false
+          enabled: true
+          days: 7
+        }
+        isVersioningEnabled: false
+      }
 }]
 
 // resource blobContainers 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
