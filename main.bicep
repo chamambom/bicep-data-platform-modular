@@ -8,18 +8,23 @@ param deployKeyVault bool
 param logAnalyticsName string
 param containerA string
 param containerB string
+param containerC string
+param containerD string
 param storageA string
 param storageB string
-
 param virtualNetworkName string
-param privateEndpointName string
-param privateLinkServiceConnName string
+param DataprivateEndpointName string
+param LogsprivateEndpointName string
+param DataprivateLinkServiceConnName string
+param LogsprivateLinkServiceConnName string
 
 module stg './modules/storage.bicep' = if (deployStorage) {
   name: 'storageDeploy'
   params: {
     containerA: containerA
     containerB: containerB
+    containerC: containerC
+    containerD: containerD
     location: location
     storageA: storageA
     storageB: storageB
@@ -29,10 +34,13 @@ module stg './modules/storage.bicep' = if (deployStorage) {
 module privateEndpoint './modules/privateEndpoint.bicep' = if (deployPrivateEndpoint) {
   name: 'privateEndpointDeploy'
   params: {
-    privateEndpointName: privateEndpointName
-    privateLinkServiceConnName: privateLinkServiceConnName
+    DataprivateEndpointName: DataprivateEndpointName
+    LogsprivateEndpointName: LogsprivateEndpointName
+    DataprivateLinkServiceConnName: DataprivateLinkServiceConnName
+    LogsprivateLinkServiceConnName: LogsprivateLinkServiceConnName
     virtualNetworkName: virtualNetworkName
-    storageID: stg.outputs.names[0]
+    DatastorageID: stg.outputs.names[0]
+    LogsstorageID: stg.outputs.names[1]
     location: location
   }
 }

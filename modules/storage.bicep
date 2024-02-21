@@ -1,11 +1,19 @@
 param location string
 param containerA string
 param containerB string
+param containerC string
+param containerD string
 param storageA string
 param storageB string
-param containerNames array = [
+
+param storageAcontainerNames array = [
   containerA
   containerB
+]
+
+param storageBcontainerNames array = [
+  containerC
+  containerD
 ]
 param storageNames array = [
   storageA
@@ -23,16 +31,16 @@ resource storageAccounts 'Microsoft.Storage/storageAccounts@2023-01-01' = [for n
   properties: {
     dnsEndpointType: 'Standard'
     defaultToOAuthAuthentication: false
-    publicNetworkAccess: 'Disabled'
+    publicNetworkAccess: 'Enabled'
     allowCrossTenantReplication: false
     minimumTlsVersion: 'TLS1_2'
-    allowBlobPublicAccess: false
+    allowBlobPublicAccess: true
     allowSharedKeyAccess: true
     networkAcls: {
       bypass: 'AzureServices'
       virtualNetworkRules: []
       ipRules: []
-      defaultAction: 'Deny'
+      defaultAction: 'Allow'
     }
     supportsHttpsTrafficOnly: true
     encryption: {
@@ -58,17 +66,6 @@ resource storageAccounts 'Microsoft.Storage/storageAccounts@2023-01-01' = [for n
 resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = [for i in range(0, length(storageNames)): {
   name: 'default'
   parent: storageAccounts[i]
-}]
-
-//create container
-
-resource containers 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = [for i in range(0, length(storageNames)): {
-  name: '${containerNames}'
-  parent: blobServices[i]
-  properties: {
-    publicAccess: 'None'
-    metadata: {}
-  }
 }]
 
 // resource blobContainers 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
@@ -97,9 +94,25 @@ resource containers 'Microsoft.Storage/storageAccounts/blobServices/containers@2
 //   }
 // }
 
-// resource blob 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for name in containerNames: {
-//   name: '${storageAccountName_resource.name}/default/${name}'
-// }]
+//create containers
+
+resource storageAcontainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = [for i in range(0, length(storageNames)): {
+  name: '${storageAcontainerNames[i]}'
+  parent: blobServices[i]
+  properties: {
+    publicAccess: 'Container'
+    metadata: {}
+  }
+}]
+
+resource storageBcontainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = [for i in range(0, length(storageNames)): {
+  name: '${storageBcontainerNames[i]}'
+  parent: blobServices[i]
+  properties: {
+    publicAccess: 'Container'
+    metadata: {}
+  }
+}]
 
 // output sid string = storageAccountName_resource.id
 

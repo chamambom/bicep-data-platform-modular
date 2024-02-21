@@ -1,17 +1,19 @@
 // param storageAccountName string = 'mdpdevdatasa'
 param location string
 param virtualNetworkName string
-param privateEndpointName string
-param privateLinkServiceConnName string
+param DataprivateEndpointName string
+param LogsprivateEndpointName string
+param DataprivateLinkServiceConnName string
+param LogsprivateLinkServiceConnName string
+param DatastorageID string
+param LogsstorageID string
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-05-01' existing = {
   name: virtualNetworkName
 }
 
-param storageID string
-
-resource sablobpe 'Microsoft.Network/privateEndpoints@2023-05-01' = {
-  name: privateEndpointName
+resource datasablobpe 'Microsoft.Network/privateEndpoints@2023-05-01' = {
+  name: DataprivateEndpointName
   location: location
   properties: {
     subnet: {
@@ -19,10 +21,36 @@ resource sablobpe 'Microsoft.Network/privateEndpoints@2023-05-01' = {
     }
     privateLinkServiceConnections: [
       {
-        name: privateLinkServiceConnName
+        name: DataprivateLinkServiceConnName
         properties: {
           // privateLinkServiceId: storageAccountName_resource.id
-          privateLinkServiceId: storageID
+          privateLinkServiceId: DatastorageID
+          groupIds: [
+            'blob'
+          ]
+          privateLinkServiceConnectionState: {
+            status: 'Approved'
+            actionsRequired: 'None'
+          }
+        }
+      }
+    ]
+  }
+}
+
+resource logsablobpe 'Microsoft.Network/privateEndpoints@2023-05-01' = {
+  name: LogsprivateEndpointName
+  location: location
+  properties: {
+    subnet: {
+      id: virtualNetwork.properties.subnets[1].id
+    }
+    privateLinkServiceConnections: [
+      {
+        name: LogsprivateLinkServiceConnName
+        properties: {
+          // privateLinkServiceId: storageAccountName_resource.id
+          privateLinkServiceId: LogsstorageID
           groupIds: [
             'blob'
           ]
