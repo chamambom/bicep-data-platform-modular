@@ -4,18 +4,18 @@ param containerB string
 param containerC string
 param containerD string
 param DataStorage string
-param LogStorage string
+param LogsStorage string
 
 param storageNames array = [
   DataStorage
-  LogStorage
+  LogsStorage
 ]
 param DataStorageContainers array = [
   containerA
   containerB
 ]
 
-param LogStorageContainers array = [
+param LogsStorageContainers array = [
   containerC
   containerD
 ]
@@ -124,7 +124,7 @@ resource storageAcontainer 'Microsoft.Storage/storageAccounts/blobServices/conta
 }]
 
 
-resource storageBcontainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for name in LogStorageContainers: {
+resource storageBcontainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for name in LogsStorageContainers: {
   name: '${storageAccounts[1].name}/default/${name}'
   dependsOn: [
     storageAccounts

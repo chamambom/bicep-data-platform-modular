@@ -10,13 +10,14 @@ param containerA string
 param containerB string
 param containerC string
 param containerD string
-param storageA string
-param storageB string
+param DataStorage string
+param LogsStorage string
 param virtualNetworkName string
 param DataprivateEndpointName string
 param LogsprivateEndpointName string
 param DataprivateLinkServiceConnName string
 param LogsprivateLinkServiceConnName string
+param privateLinkServiceName string
 
 module stg './modules/storage.bicep' = if (deployStorage) {
   name: 'storageDeploy'
@@ -26,8 +27,8 @@ module stg './modules/storage.bicep' = if (deployStorage) {
     containerC: containerC
     containerD: containerD
     location: location
-    storageA: storageA
-    storageB: storageB
+    DataStorage: DataStorage
+    LogsStorage: LogsStorage
   }
 }
 
@@ -42,6 +43,19 @@ module privateEndpoint './modules/privateEndpoint.bicep' = if (deployPrivateEndp
     DatastorageID: stg.outputs.storageAccountIds[0].ids
     LogsstorageID: stg.outputs.storageAccountIds[1].ids
     location: location
+  }
+}
+
+module privateLinkService './modules/privateLinkService.bicep' = {
+  name: 'privateLinkService'
+  params: {
+    loadBalancerName: loadBalancer.outputs.name
+    privateEndpointName: privateLinkServicePrivateEndpointName
+    privatelinkServiceName: privateLinkServiceName
+    virtualNetworkName: clientVirtualNetwork.outputs.virtualNetworkName
+    subnetName: clientVirtualNetwork.outputs.frontendSubnetName
+    location: location
+    tags: tags
   }
 }
 
