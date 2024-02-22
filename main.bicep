@@ -2,6 +2,7 @@ param location string
 // param resourceGroup string
 param deployStorage bool
 param deployPrivateEndpoint bool
+param deployPrivateLinkService bool
 param deployLogAnalytics bool
 param deployDataFactory bool
 param deployKeyVault bool
@@ -46,18 +47,18 @@ module privateEndpoint './modules/privateEndpoint.bicep' = if (deployPrivateEndp
   }
 }
 
-module privateLinkService './modules/privateLinkService.bicep' = {
-  name: 'privateLinkService'
-  params: {
-    loadBalancerName: loadBalancer.outputs.name
-    privateEndpointName: privateLinkServicePrivateEndpointName
-    privatelinkServiceName: privateLinkServiceName
-    virtualNetworkName: clientVirtualNetwork.outputs.virtualNetworkName
-    subnetName: clientVirtualNetwork.outputs.frontendSubnetName
-    location: location
-    tags: tags
-  }
-}
+// module privateLinkService './modules/privateLinkService.bicep' = if (deployPrivateLinkService) {
+//   name: 'privateLinkService'
+//   params: {
+//     loadBalancerName: loadBalancer.outputs.name
+//     privateEndpointName: privateLinkServicePrivateEndpointName
+//     privatelinkServiceName: privateLinkServiceName
+//     virtualNetworkName: clientVirtualNetwork.outputs.virtualNetworkName
+//     subnetName: clientVirtualNetwork.outputs.frontendSubnetName
+//     location: location
+//     tags: tags
+//   }
+// }
 
 module adf './modules/datafactory.bicep' = if (deployDataFactory) {
   name: 'factoryDeploy'
