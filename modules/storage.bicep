@@ -6,6 +6,10 @@ param containerD string
 param storageA string
 param storageB string
 
+param storageNames array = [
+  storageA
+  storageB
+]
 param storageAcontainerNames array = [
   containerA
   containerB
@@ -15,10 +19,7 @@ param storageBcontainerNames array = [
   containerC
   containerD
 ]
-param storageNames array = [
-  storageA
-  storageB
-]
+
 
 //Create storages
 resource storageAccounts 'Microsoft.Storage/storageAccounts@2023-01-01' = [for name in storageNames: {
@@ -62,7 +63,7 @@ resource storageAccounts 'Microsoft.Storage/storageAccounts@2023-01-01' = [for n
   }
 }]
 
-//create blob service
+//create blob service - Containers live inside of a blob service
 
 resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = [for i in range(0, length(storageNames)): {
   name: 'default'
@@ -91,55 +92,52 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01
       }
 }]
 
-// resource blobContainers 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
-//   parent: storageAccountName_resource
-//   name: 'default'
-//   properties: {
-//     changeFeed: {
-//       enabled: false
-//     }
-//     restorePolicy: {
-//       enabled: false
-//     }
-//     containerDeleteRetentionPolicy: {
-//       enabled: true
-//       days: 7
-//     }
-//     cors: {
-//       corsRules: []
-//     }
-//     deleteRetentionPolicy: {
-//       allowPermanentDelete: false
-//       enabled: true
-//       days: 7
-//     }
-//     isVersioningEnabled: false
-//   }
-// }
-
 //create containers
 
-resource storageAcontainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = [for i in range(0, length(storageNames)): {
-  name: '${storageAcontainerNames[i]}'
-  parent: blobServices[i]
-  properties: {
-    publicAccess: 'Container'
-    metadata: {}
-  }
+
+
+// resource storageAcontainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = [for i in range(0, length(storageNames)): {
+//   name: '${storageAcontainerNames[i]}'
+//   parent: blobServices[i]
+//   properties: {
+//     publicAccess: 'Container'
+//     metadata: {}
+//   }
+// }]
+
+// resource storageBcontainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = [for i in range(0, length(storageNames)): {
+//   name: '${storageBcontainerNames[i]}'
+//   parent: blobServices[i]
+//   properties: {
+//     publicAccess: 'Container'
+//     metadata: {}
+//   }
+// }]
+
+resource storageAcontainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for name in storageAcontainerNames: {
+  name: '${storageAccounts[0].name}/default/${name}'
+  dependsOn: [
+    storageAccounts
+    blobServices
+  ]
+
 }]
 
-resource storageBcontainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = [for i in range(0, length(storageNames)): {
-  name: '${storageBcontainerNames[i]}'
-  parent: blobServices[i]
-  properties: {
-    publicAccess: 'Container'
-    metadata: {}
-  }
+
+resource storageBcontainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for name in storageBcontainerNames: {
+  name: '${storageAccounts[1].name}/default/${name}'
+  dependsOn: [
+    storageAccounts
+    blobServices
+  ]
 }]
 
-// output sid string = storageAccountName_resource.id
 
-//storage accounts IDs.
+
+
+//If its one Storage Account - output sid string = storageAccounts.id 
+
+//If its 1 or more storage accounts IDs in an array
 output storageAccountIds array = [for i in range(0, length(storageNames)): {
   ids: storageAccounts[i].id
 }]
