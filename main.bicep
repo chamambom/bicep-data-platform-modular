@@ -33,7 +33,7 @@ module stg './modules/storage.bicep' = if (deployStorage) {
     location: location
     DataStorage: DataStorage
     LogsStorage: LogsStorage
-    // workspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
+    workspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
   }
 }
 

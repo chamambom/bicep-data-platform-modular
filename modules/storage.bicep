@@ -92,9 +92,7 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01
       }
 }]
 
-//create containers
-
-
+//Create Containers
 
 // resource storageAcontainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = [for i in range(0, length(storageNames)): {
 //   name: '${storageAcontainerNames[i]}'
@@ -133,6 +131,32 @@ resource storageBcontainer 'Microsoft.Storage/storageAccounts/blobServices/conta
 }]
 
 
+param workspaceId string
+// param storageInfo object
+
+resource storageAccountsBlobDiagnostics 'microsoft.insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, length(storageNames)):{
+  name: 'service'
+  scope: blobServices[i]
+  properties: {
+    workspaceId: workspaceId
+    metrics: [
+      {
+        category: 'Transaction'
+        enabled: true
+        retentionPolicy: {
+          enabled: false
+          days: 0
+        }
+      }
+    ]
+    logs: [
+      {
+        categoryGroup: 'allLogs'
+        enabled: true
+      }    
+    ]
+  }
+}]
 
 
 
