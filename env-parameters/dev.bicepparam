@@ -3,7 +3,7 @@ using '../main.bicep'
 param deployStorage = true
 param deployPrivateEndpoint = true
 param deployPrivateLinkService = false
-param deployLogAnalytics = false
+param deployLogAnalytics = true
 param deployDataFactory = false
 param deployKeyVault = false
 param logAnalyticsName = 'mdp-dev-logs-la'

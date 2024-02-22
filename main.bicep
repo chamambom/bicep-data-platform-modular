@@ -20,6 +20,9 @@ param DataprivateLinkServiceConnName string
 param LogsprivateLinkServiceConnName string
 param privateLinkServiceName string
 
+
+
+
 module stg './modules/storage.bicep' = if (deployStorage) {
   name: 'storageDeploy'
   params: {
@@ -30,6 +33,7 @@ module stg './modules/storage.bicep' = if (deployStorage) {
     location: location
     DataStorage: DataStorage
     LogsStorage: LogsStorage
+    // workspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
   }
 }
 

@@ -135,6 +135,8 @@ resource storageBcontainer 'Microsoft.Storage/storageAccounts/blobServices/conta
 
 
 
+
+
 //If its one Storage Account - output sid string = storageAccounts.id 
 
 //If its 1 or more storage accounts IDs in an array
