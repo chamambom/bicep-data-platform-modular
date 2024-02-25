@@ -12,7 +12,7 @@ param loadBalancerName string
 param virtualNetworkName string
 
 @description('Specifies the name of the subnet used by the load balancer.')
-param subnetName string
+param snowflakesubnetName string
 
 @description('Specifies the location.')
 param location string = resourceGroup().location
@@ -29,8 +29,8 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-08-01' existing = {
   name: virtualNetworkName
 }
 
-resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-08-01' existing = {
-  name: subnetName
+resource snowflakesubnet 'Microsoft.Network/virtualNetworks/subnets@2021-08-01' existing = {
+  name: snowflakesubnetName
   parent: vnet
 }
 
@@ -66,7 +66,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   location: location
   properties: {
     subnet: {
-      id: subnet.id
+      id: snowflakesubnet.id
     }
     privateLinkServiceConnections: [
       {
@@ -78,6 +78,6 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
     ]
   }
   dependsOn: [
-    subnet
+    snowflakesubnet
   ]
 }
