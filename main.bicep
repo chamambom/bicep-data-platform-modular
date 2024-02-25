@@ -14,6 +14,7 @@ param containerD string
 param DataStorage string
 param LogsStorage string
 param virtualNetworkName string
+param subnetName string
 param DataprivateEndpointName string
 param LogsprivateEndpointName string
 param DataprivateLinkServiceConnName string
@@ -45,6 +46,7 @@ module privateEndpoint './modules/privateEndpoint.bicep' = if (deployPrivateEndp
     DataprivateLinkServiceConnName: DataprivateLinkServiceConnName
     LogsprivateLinkServiceConnName: LogsprivateLinkServiceConnName
     virtualNetworkName: virtualNetworkName
+    subnetName: subnetName
     DatastorageID: stg.outputs.storageAccountIds[0].ids
     LogsstorageID: stg.outputs.storageAccountIds[1].ids
     location: location
