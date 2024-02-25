@@ -8,14 +8,20 @@ param LogsprivateLinkServiceConnName string
 param DatastorageID string
 param LogsstorageID string
 @description('Specifies the name of the subnet used by the private endpoint.')
-param subnetName string
+param DatasubnetName string
+param LogsubnetName string
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-05-01' existing = {
   name: virtualNetworkName
 }
 
-resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-08-01' existing = {
-  name: subnetName
+resource datasubnet 'Microsoft.Network/virtualNetworks/subnets@2021-08-01' existing = {
+  name: DatasubnetName
+  parent: virtualNetwork
+}
+
+resource logsubnet 'Microsoft.Network/virtualNetworks/subnets@2021-08-01' existing = {
+  name: LogsubnetName
   parent: virtualNetwork
 }
 
@@ -24,7 +30,7 @@ resource datasablobpe 'Microsoft.Network/privateEndpoints@2023-05-01' = {
   location: location
   properties: {
     subnet: {
-      id: subnet.id
+      id: datasubnet.id
     }
     privateLinkServiceConnections: [
       {
@@ -50,7 +56,7 @@ resource logsablobpe 'Microsoft.Network/privateEndpoints@2023-05-01' = {
   location: location
   properties: {
     subnet: {
-      id: virtualNetwork.properties.subnets[1].id
+      id: logsubnet.id
     }
     privateLinkServiceConnections: [
       {
