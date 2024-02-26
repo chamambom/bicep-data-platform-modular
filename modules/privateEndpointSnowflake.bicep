@@ -6,7 +6,7 @@ param snowflakeprivateLinkServiceConnName string
 param snowflakePrivateLinkServiceId string
 
 @description('Specifies the name of the client virtual network.')
-param virtualNetworkName string
+param prodVirtualNetworkName string
 
 @description('Specifies the name of the subnet used by the load balancer.')
 param snowflakesubnetName string
@@ -15,7 +15,7 @@ param snowflakesubnetName string
 param location string = resourceGroup().location
 
 resource vnet 'Microsoft.Network/virtualNetworks@2021-08-01' existing = {
-  name: virtualNetworkName
+  name: prodVirtualNetworkName
 }
 
 resource snowflakesubnet 'Microsoft.Network/virtualNetworks/subnets@2021-08-01' existing = {

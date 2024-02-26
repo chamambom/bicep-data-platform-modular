@@ -1,6 +1,6 @@
 // param storageAccountName string = 'mdpdevdatasa'
 param location string
-param virtualNetworkName string
+param devVirtualNetworkName string
 param DataprivateEndpointName string
 param LogsprivateEndpointName string
 param DataprivateLinkServiceConnName string
@@ -12,7 +12,7 @@ param DatasubnetName string
 param LogsubnetName string
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-05-01' existing = {
-  name: virtualNetworkName
+  name: devVirtualNetworkName
 }
 
 resource datasubnet 'Microsoft.Network/virtualNetworks/subnets@2021-08-01' existing = {

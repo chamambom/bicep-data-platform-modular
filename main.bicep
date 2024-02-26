@@ -13,7 +13,8 @@ param containerC string
 param containerD string
 param DataStorage string
 param LogsStorage string
-param virtualNetworkName string
+param devVirtualNetworkName string
+param prodVirtualNetworkName string
 param DatasubnetName string
 param snowflakesubnetName string
 param LogsubnetName string
@@ -47,7 +48,7 @@ module privateEndpoint './modules/privateEndpoint.bicep' = if (deployPrivateEndp
     LogsprivateEndpointName: LogsprivateEndpointName
     DataprivateLinkServiceConnName: DataprivateLinkServiceConnName
     LogsprivateLinkServiceConnName: LogsprivateLinkServiceConnName
-    virtualNetworkName: virtualNetworkName
+    devVirtualNetworkName: devVirtualNetworkName
     DatasubnetName: DatasubnetName
     LogsubnetName: LogsubnetName
     DatastorageID: stg.outputs.storageAccountIds[0].ids
@@ -61,7 +62,7 @@ module snowFlakeprivateEndpoint './modules/privateEndpointSnowflake.bicep' = if 
   params: {
     snowflakePrivateEndpointName: snowflakePrivateEndpointName  
     snowflakeprivateLinkServiceConnName: snowflakeprivateLinkServiceConnName
-    virtualNetworkName: virtualNetworkName
+    prodVirtualNetworkName: prodVirtualNetworkName
     snowflakesubnetName: snowflakesubnetName
     location: location
     snowflakePrivateLinkServiceId: snowflakePrivateLinkServiceId
