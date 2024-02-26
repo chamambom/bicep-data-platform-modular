@@ -25,6 +25,7 @@ param LogsprivateLinkServiceConnName string
 param snowflakePrivateEndpointName string
 param snowflakeprivateLinkServiceConnName string
 param snowflakePrivateLinkServiceId string
+param storageSKU string
 
 
 module stg './modules/storage.bicep' = if (deployStorage) {
@@ -35,6 +36,7 @@ module stg './modules/storage.bicep' = if (deployStorage) {
     containerC: containerC
     containerD: containerD
     location: location
+    storageSKU:storageSKU
     DataStorage: DataStorage
     LogsStorage: LogsStorage
     workspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId

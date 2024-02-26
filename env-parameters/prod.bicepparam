@@ -3,7 +3,7 @@ using '../main.bicep'
 param deployStorage = true
 param deployPrivateEndpoint = true
 param deployLogAnalytics = true
-param deployprivateEndpointSnowflake = false
+param deployprivateEndpointSnowflake = true
 param deployDataFactory = false
 param deployKeyVault = false
 param logAnalyticsName = 'mdp-prd-logs-la'
@@ -14,6 +14,7 @@ param containerC = 'logs'
 param containerD = 'testcontainer'
 param DataStorage = 'mdpprddatasa'
 param LogsStorage = 'mdpprdlogsa'
+param storageSKU = 'Standard_ZRS'
 param devVirtualNetworkName = 'mdp-prd-vnetint-vnet'
 param prodVirtualNetworkName = 'mdp-prd-vnetint-vnet'
 param DatasubnetName = 'mdp-prd-data-subnet'

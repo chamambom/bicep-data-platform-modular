@@ -5,6 +5,7 @@ param containerC string
 param containerD string
 param DataStorage string
 param LogsStorage string
+param storageSKU string
 
 param storageNames array = [
   DataStorage
@@ -26,16 +27,16 @@ resource storageAccounts 'Microsoft.Storage/storageAccounts@2023-01-01' = [for n
   name: '${name}'
   location: location
   sku: {
-    name: 'Standard_LRS'
+    name: storageSKU  
   }
   kind: 'StorageV2'
   properties: {
     dnsEndpointType: 'Standard'
     defaultToOAuthAuthentication: false
-    publicNetworkAccess: 'Enabled'
+    publicNetworkAccess: 'Disabled'
     allowCrossTenantReplication: false
     minimumTlsVersion: 'TLS1_2'
-    allowBlobPublicAccess: true
+    allowBlobPublicAccess: false
     allowSharedKeyAccess: true
     networkAcls: {
       bypass: 'AzureServices'
