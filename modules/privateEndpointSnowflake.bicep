@@ -1,6 +1,9 @@
 @description('Specifies the name of the Azure Private Endpoint.')
 param snowflakePrivateEndpointName string
+@description('Specifies the name of the Azure Private Endpoint.')
 param snowflakeprivateLinkServiceConnName string
+
+param snoflakePrivateLinkServiceId string
 
 @description('Specifies the name of the client virtual network.')
 param virtualNetworkName string
@@ -21,7 +24,7 @@ resource snowflakesubnet 'Microsoft.Network/virtualNetworks/subnets@2021-08-01' 
 }
 
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-05-01' = {
   name: snowflakePrivateEndpointName
   location: location
   properties: {
@@ -33,8 +36,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
         name: snowflakeprivateLinkServiceConnName
         properties: {
           // privateLinkServiceId: storageAccountName_resource.id
-          privateLinkServiceId:  snowflakesubnet.id
-     
+          privateLinkServiceId:  snoflakePrivateLinkServiceId     
           privateLinkServiceConnectionState: {
             status: 'Approved'
             actionsRequired: 'None'
