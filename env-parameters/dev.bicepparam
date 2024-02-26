@@ -2,8 +2,8 @@ using '../main.bicep'
 
 param deployStorage = true
 param deployPrivateEndpoint = true
-param deployprivateEndpointSnowflake = false
 param deployLogAnalytics = true
+param deployprivateEndpointSnowflake = false
 param deployDataFactory = false
 param deployKeyVault = false
 param logAnalyticsName = 'mdp-dev-logs-la'
@@ -25,4 +25,4 @@ param LogsprivateLinkServiceConnName = 'mdp-dev-log-sa-pe-conn'
 param snowflakePrivateEndpointName = 'mdp-prd-snowflake-pls'
 param snowflakeprivateLinkServiceConnName = 'mdp-prd-snowflake-pls-conn'
 param snowflakesubnetName = 'mdp-prd-snowflake-subnet'
-param snowflakePrivateLinkServiceId = 'sdfsf.sdfsfdsfsd'
+param snowflakePrivateLinkServiceId = ''
