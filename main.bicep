@@ -21,7 +21,7 @@ param DataprivateEndpointName string
 param LogsprivateEndpointName string
 param DataprivateLinkServiceConnName string
 param LogsprivateLinkServiceConnName string
-param snowflakeprivateEndpointName string
+param snowflakePrivateEndpointName string
 param snowflakeprivateLinkServiceConnName string
 param snowflakePrivateLinkServiceId string
 
@@ -57,9 +57,9 @@ module privateEndpoint './modules/privateEndpoint.bicep' = if (deployPrivateEndp
 }
 
 module snowFlakeprivateEndpoint './modules/privateEndpointSnowflake.bicep' = if (deployprivateEndpointSnowflake) {
-  name: 'snowflakePrivateEndpointDeploy'
+  name: 'snowlakePrivateEndpointDeploy'
   params: {
-    snowflakePrivateEndpointName: snowflakeprivateEndpointName  
+    snowflakePrivateEndpointName: snowflakePrivateEndpointName  
     snowflakeprivateLinkServiceConnName: snowflakeprivateLinkServiceConnName
     virtualNetworkName: virtualNetworkName
     snowflakesubnetName: snowflakesubnetName
