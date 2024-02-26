@@ -15,12 +15,15 @@ param DataStorage string
 param LogsStorage string
 param virtualNetworkName string
 param DatasubnetName string
+param snowflakesubnetName string
 param LogsubnetName string
 param DataprivateEndpointName string
 param LogsprivateEndpointName string
 param DataprivateLinkServiceConnName string
 param LogsprivateLinkServiceConnName string
-param privateEndpointSnowflakeName string
+param snowflakeprivateEndpointName string
+param snowflakeprivateLinkServiceConnName string
+param snowflakeResourceID string
 
 
 
@@ -61,8 +64,8 @@ module privateLinkService './modules/privateEndpointSnowflake.bicep' = if (deplo
     snowflakePrivateEndpointName: snowflakeprivateEndpointName  
     snowflakeprivateLinkServiceConnName: snowflakeprivateLinkServiceConnName
     virtualNetworkName: virtualNetworkName
-    DatasubnetName: DatasubnetName
-    ResourceID: stg.outputs.storageAccountIds[0].ids
+    snowflakesubnetName: snowflakesubnetName
+    snowflakeResourceID: snowflakeResourceID
     location: location
   }
 }
