@@ -59,7 +59,7 @@ resource storageAccounts 'Microsoft.Storage/storageAccounts@2023-01-01' = [for n
       keySource: 'Microsoft.Storage'
     }
     accessTier: 'Hot'
-    isHnsEnabled:true
+    isHnsEnabled: name == storageNames[0] ? true : false
   }
 }]
 

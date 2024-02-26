@@ -2,7 +2,7 @@ param location string
 // param resourceGroup string
 param deployStorage bool
 param deployPrivateEndpoint bool
-param deployPrivateLinkService bool
+param deployprivateEndpointSnowflake bool
 param deployLogAnalytics bool
 param deployDataFactory bool
 param deployKeyVault bool
@@ -20,7 +20,7 @@ param DataprivateEndpointName string
 param LogsprivateEndpointName string
 param DataprivateLinkServiceConnName string
 param LogsprivateLinkServiceConnName string
-param privateLinkServiceName string
+param privateEndpointSnowflakeName string
 
 
 
@@ -55,18 +55,17 @@ module privateEndpoint './modules/privateEndpoint.bicep' = if (deployPrivateEndp
   }
 }
 
-// module privateLinkService './modules/privateLinkService.bicep' = if (deployPrivateLinkService) {
-//   name: 'privateLinkService'
-//   params: {
-//     loadBalancerName: loadBalancer.outputs.name
-//     privateEndpointName: privateLinkServicePrivateEndpointName
-//     privatelinkServiceName: privateLinkServiceName
-//     virtualNetworkName: clientVirtualNetwork.outputs.virtualNetworkName
-//     subnetName: clientVirtualNetwork.outputs.frontendSubnetName
-//     location: location
-//     tags: tags
-//   }
-// }
+module privateLinkService './modules/privateEndpointSnowflake.bicep' = if (deployprivateEndpointSnowflake) {
+  name: 'privateLinkService'
+  params: {
+    snowflakePrivateEndpointName: snowflakeprivateEndpointName  
+    snowflakeprivateLinkServiceConnName: snowflakeprivateLinkServiceConnName
+    virtualNetworkName: virtualNetworkName
+    DatasubnetName: DatasubnetName
+    ResourceID: stg.outputs.storageAccountIds[0].ids
+    location: location
+  }
+}
 
 module adf './modules/datafactory.bicep' = if (deployDataFactory) {
   name: 'factoryDeploy'
