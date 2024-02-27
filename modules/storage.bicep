@@ -2,7 +2,6 @@ param location string
 param containerA string
 param containerB string
 param containerC string
-param containerD string
 param DataStorage string
 param LogsStorage string
 param storageSKU string
@@ -18,7 +17,6 @@ param DataStorageContainers array = [
 
 param LogsStorageContainers array = [
   containerC
-  containerD
 ]
 
 

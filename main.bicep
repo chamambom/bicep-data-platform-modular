@@ -10,7 +10,6 @@ param logAnalyticsName string
 param containerA string
 param containerB string
 param containerC string
-param containerD string
 param DataStorage string
 param LogsStorage string
 param devVirtualNetworkName string
@@ -34,7 +33,6 @@ module stg './modules/storage.bicep' = if (deployStorage) {
     containerA: containerA
     containerB: containerB
     containerC: containerC
-    containerD: containerD
     location: location
     storageSKU:storageSKU
     DataStorage: DataStorage
